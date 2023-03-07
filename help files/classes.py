@@ -16,27 +16,27 @@ class UnitClass:
 WarriorClass: UnitClass = UnitClass(
     name="Hellscream",
     max_health=10.0,
-    max_stamina=6.0,
-    attack=3.2,
-    armor=5.5,
+    max_stamina=80.0,
+    attack=1.1,
+    armor=1.1,
     skill=Bash()
 )
 
 ThiefClass = UnitClass(
     name="Valira",
-    max_health=8.0,
-    max_stamina=10.0,
-    attack=4.1,
-    armor=4.0,
+    max_health=50.0,
+    max_stamina=70.0,
+    attack=1.3,
+    armor=0.9,
     skill=Garrote()
 )
 
 MageClass = UnitClass(
     name="Khadgar",
-    max_health=6.0,
-    max_stamina=20.0,
-    attack=6.7,
-    armor=3.0,
+    max_health=60.0,
+    max_stamina=100.0,
+    attack=0.8,
+    armor=1.1,
     skill=FrostBolt()
 )
 

@@ -49,8 +49,8 @@ class Skill(ABC):
 
 class Bash(Skill):
     name = 'Стан'
-    stamina = 5.0
-    damage = 1
+    stamina = 15.0
+    damage = 17.0
 
     def skill_effect(self):
         self.user.stamina -= self.stamina
@@ -60,8 +60,8 @@ class Bash(Skill):
 
 class Garrote(Skill):
     name = "Гаррота"
-    stamina = 2.4
-    damage = 3
+    stamina = 5.0
+    damage = 10.0
 
     def skill_effect(self):
         self.user.stamina -= self.stamina
@@ -71,8 +71,8 @@ class Garrote(Skill):
 
 class FrostBolt(Skill):
     name = "Ледяной шар"
-    stamina = 3.0
-    damage = 7
+    stamina = 70.0
+    damage = 30.0
 
     def skill_effect(self):
         self.user.stamina -= self.stamina

@@ -1,4 +1,4 @@
-from unit import BaseUnit
+from unit import BaseUnit, PlayerUnit, EnemyUnit
 
 class BaseSingleton(type):
     _instances = {}
@@ -11,32 +11,44 @@ class BaseSingleton(type):
 
 
 class Arena(metaclass=BaseSingleton):
-    STAMINA_PER_ROUND = 1
+    STAMINA_PER_ROUND = 1.5
     player = None
     enemy = None
     game_is_running = False
 
     def start_game(self, player: BaseUnit, enemy: BaseUnit):
-        # TODO НАЧАЛО ИГРЫ -> None
-        # TODO присваиваем экземпляру класса аттрибуты "игрок" и "противник"
-        # TODO а также выставляем True для свойства "началась ли игра"
-        pass
+        self.player = player
+        self.enemy = enemy
+        self.game_is_running = False
+        self.battle_result = None
+
 
     def _check_players_hp(self):
-        # TODO ПРОВЕРКА ЗДОРОВЬЯ ИГРОКА И ВРАГА
-        # TODO проверка здоровья игрока и врага и возвращение результата строкой:
-        # TODO может быть три результата:
-        # TODO Игрок проиграл битву, Игрок выиграл битву, Ничья и сохраняем его в аттрибуте (self.battle_result)
-        # TODO если Здоровья игроков в порядке то ничего не происходит
-        pass
+        if self.player.hp <= 0 and self.enemy.hp <= 0:
+            self.battle_result = "Ничья"
+        elif self.player.hp <= 0:
+            self.battle_result = f"{self.enemy.name} выиграл битву"
+        elif self.enemy.hp <= 0:
+            self.battle_result = f"{self.player.name} выиграл битву"
+
+
 
     def _stamina_regeneration(self):
-        # TODO регенерация здоровья и стамины для игрока и врага за ход
-        # TODO в этом методе к количеству стамины игрока и врага прибавляется константное значение.
-        # TODO главное чтобы оно не привысило максимальные значения (используйте if)
-        pass
+        players = (self.player,self.enemy)
+
+        for unit in players:
+            unit.stamina += self.STAMINA_PER_ROUND
+            if unit.stamina > unit.unit_class.max_stamina:
+                unit.stamina = unit.unit_class.max_stamina
+
+
 
     def next_turn(self):
+        result = self._check_players_hp()
+        if result is not None:
+            return result
+
+
         # TODO СЛЕДУЮЩИЙ ХОД -> return result | return self.enemy.hit(self.player)
         # TODO срабатывает когда игроп пропускает ход или когда игрок наносит удар.
         # TODO создаем поле result и проверяем что вернется в результате функции self._check_players_hp
