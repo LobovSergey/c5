@@ -44,7 +44,7 @@ class Equipment:
                 return weapon
             return None
 
-    def get_armor(self, armor_name) -> Optional[Armor]:
+    def get_armor(self, armor_name):
         for armor in self.equipments.armor_equipment:
             if armor_name in armor:
                 return armor

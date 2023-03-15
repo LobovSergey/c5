@@ -19,8 +19,8 @@ class BaseUnit(ABC):
         self.unit_class: UnitClass = unit_class
         self.hp: float = unit_class.max_health
         self.stamina: float = unit_class.max_stamina
-        self.weapon: Weapon = None
-        self.armor: Armor = None
+        self.weapon: Weapon
+        self.armor: Armor
         self._is_skill_used: bool = False
 
     @property
@@ -45,8 +45,8 @@ class BaseUnit(ABC):
         unit_damage = self.weapon.damage * self.unit_class.attack
 
         if target.stamina > target.armor.stamina_per_turn:
-                target.stamina -= target.armor.stamina_per_turn
-                target_diffence = target.unit_class.armor * target.armor
+            target.stamina -= target.armor.stamina_per_turn
+            target_diffence = target.unit_class.armor * target.armor
 
         damage = round(unit_damage - target_diffence, 1)
         target.get_damage(damage=damage)
@@ -57,9 +57,6 @@ class BaseUnit(ABC):
 
     @abstractmethod
     def hit(self, target: BaseUnit) -> str:
-        """
-        этот метод будет переопределен ниже
-        """
         pass
 
     def use_skill(self, target: BaseUnit) -> str:
@@ -67,7 +64,6 @@ class BaseUnit(ABC):
             self._is_skill_used = True
             return self.unit_class.skill.use(user=self, target=target)
         return "Навык использован"
-
 
 
 class PlayerUnit(BaseUnit):
@@ -86,15 +82,7 @@ class PlayerUnit(BaseUnit):
 class EnemyUnit(BaseUnit):
 
     def hit(self, target: BaseUnit) -> str:
-        """
-        функция удар соперника
-        должна содержать логику применения соперником умения
-        (он должен делать это автоматически и только 1 раз за бой).
-        Например, для этих целей можно использовать функцию randint из библиотеки random.
-        Если умение не применено, противник наносит простой удар, где также используется
-        функция _count_damage(target
-        """
-        if not self._is_skill_used and randint(0,99) < 10 and self.stamina >= self.unit_class.skill.stamina:
+        if not self._is_skill_used and randint(0, 99) < 10 and self.stamina >= self.unit_class.skill.stamina:
             return self.use_skill(target=target)
 
         if self.stamina < self.weapon.stamina_per_hit:
