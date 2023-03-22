@@ -13,7 +13,7 @@ class UnitClass:
     skill: Skill
 
 
-WarriorClass: UnitClass = UnitClass(
+WarriorClass = UnitClass(
     name="Hellscream",
     max_health=10.0,
     max_stamina=80.0,

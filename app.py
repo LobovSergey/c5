@@ -71,10 +71,11 @@ def choose_hero():
         weapon = request.form["weapon"]
         armor = request.form["armor"]
         equip = Equipment()
-        player_unit = PlayerUnit(name=name, unit_class=unit_classes[unit_class])
-        player_unit.equip_weapon(equip.get_weapon(weapon))
-        player_unit.equip_armor(equip.get_armor(armor))
-        heroes["player"] = player_unit
+        player = PlayerUnit(name=name, unit_class=unit_classes[unit_class])
+        player.equip_weapon(equip.get_weapon(weapon))
+        player.equip_armor(equip.get_armor(armor))
+        heroes["player"] = player
+        print(player)
         return redirect(url_for("choose_enemy"))
 
 
@@ -93,10 +94,11 @@ def choose_enemy():
         unit_class = request.form["unit_class"]
         weapon = request.form["weapon"]
         armor = request.form["armor"]
-        enemy_unit = EnemyUnit(name=name, unit_class=unit_classes[unit_class])
-        enemy_unit.equip_weapon(Equipment().get_weapon(weapon_name=weapon))
-        enemy_unit.equip_armor(Equipment().get_armor(armor_name=armor))
-        heroes["player"] = enemy_unit
+        enemy = EnemyUnit(name=name, unit_class=unit_classes[unit_class])
+        enemy.equip_weapon(Equipment().get_weapon(weapon_name=weapon))
+        enemy.equip_armor(Equipment().get_armor(armor_name=armor))
+        heroes["player"] = enemy
+
         return redirect(url_for("start_fight"))
 
 

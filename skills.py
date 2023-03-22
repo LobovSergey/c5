@@ -2,10 +2,12 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
+from marshmallow_dataclass import dataclass
+
 if TYPE_CHECKING:
     from unit import BaseUnit
 
-
+@dataclass
 class Skill(ABC):
     """
     Базовый класс умения

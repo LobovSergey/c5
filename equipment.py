@@ -40,13 +40,13 @@ class Equipment:
 
     def get_weapon(self, weapon_name) -> Optional[Weapon]:
         for weapon in self.equipments.weapons:
-            if weapon_name == weapon:
+            if weapon_name == weapon.name:
                 return weapon
         return None
 
     def get_armor(self, armor_name):
         for armor in self.equipments.armors:
-            if armor_name == armor:
+            if armor_name == armor.name:
                 return armor
         return None
 

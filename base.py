@@ -16,12 +16,12 @@ class Arena(metaclass=BaseSingleton):
     player = None
     enemy = None
     game_is_running = False
+    battle_result = None
 
     def start_game(self, player, enemy):
         self.player = player
         self.enemy = enemy
         self.game_is_running = True
-
 
     def _check_players_hp(self):
         if self.player.hp <= 0 and self.enemy.hp <= 0:
