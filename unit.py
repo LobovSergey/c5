@@ -1,13 +1,12 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from equipment import Weapon, Armor
-from classes import UnitClass
 from random import randint
 
 
 class BaseUnit(ABC):
 
-    def __init__(self, name: str, unit_class: UnitClass):
+    def __init__(self, name, unit_class):
 
         self.name: str = name
         self.unit_class = unit_class
@@ -40,7 +39,7 @@ class BaseUnit(ABC):
 
         if target.stamina > target.armor.stamina_per_turn:
             target.stamina -= target.armor.stamina_per_turn
-            target_diffence = target.unit_class.armor * target.armor
+            target_diffence = target.unit_class.armor * target.armor.defence
 
         damage = round(unit_damage - target_diffence, 1)
         target.get_damage(damage=damage)

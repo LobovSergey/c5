@@ -1,7 +1,7 @@
+from classes import unit_classes
 from flask import Flask, render_template, redirect, url_for, request
 from base import Arena
-from equipment import EquipmentData, Equipment
-from classes import unit_classes
+from equipment import Equipment
 from unit import PlayerUnit, BaseUnit, EnemyUnit
 
 app = Flask(__name__)
@@ -16,7 +16,7 @@ arena = Arena()
 
 @app.route("/")
 def menu_page():
-    return render_template("index.html")
+    return render_template("index.html", )
 
 
 @app.route("/fight/")
@@ -27,31 +27,33 @@ def start_fight():
 
 @app.route("/fight/hit")
 def hit():
-    # TODO кнопка нанесения удара
-    # TODO обновляем экран боя (нанесение удара) (шаблон fight.html)
-    # TODO если игра идет - вызываем метод player.hit() экземпляра класса арены
-    # TODO если игра не идет - пропускаем срабатывание метода (простот рендерим шаблон с текущими данными)
-    pass
+    if arena.game_is_running:
+        response = arena.player_hit()
+    else:
+        response = arena.battle_result
+    return render_template("fight.html", result=response, heroes=heroes)
 
 
 @app.route("/fight/use-skill")
 def use_skill():
-    # TODO кнопка использования скилла
-    # TODO логика пркатикчески идентична предыдущему эндпоинту
-    pass
+    if arena.game_is_running:
+        response = arena.player_use_skill()
+    else:
+        response = arena.battle_result
+    return render_template("fight.html", result=response, heroes=heroes)
 
 
 @app.route("/fight/pass-turn")
 def pass_turn():
-    # TODO кнопка пропус хода
-    # TODO логика пркатикчески идентична предыдущему эндпоинту
-    # TODO однако вызываем здесь функцию следующий ход (arena.next_turn())
-    pass
+    if arena.game_is_running:
+        response = arena.next_turn()
+    else:
+        response = arena.battle_result
+    return render_template("fight.html", result=response, heroes=heroes)
 
 
 @app.route("/fight/end-fight")
 def end_fight():
-    # TODO кнопка завершить игру - переход в главное меню
     return render_template("index.html", heroes=heroes)
 
 
@@ -75,7 +77,7 @@ def choose_hero():
         player.equip_weapon(equip.get_weapon(weapon))
         player.equip_armor(equip.get_armor(armor))
         heroes["player"] = player
-        print(player)
+        print(player.weapon)
         return redirect(url_for("choose_enemy"))
 
 
@@ -83,7 +85,7 @@ def choose_hero():
 def choose_enemy():
     if request.method == 'GET':
         result = {
-            "header": "Выбор вашего героя",
+            "header": "Выбор вашего врага",
             "classes": unit_classes,
             "weapons": Equipment().get_weapons_names(),
             "armors": Equipment().get_armors_names(),
@@ -94,11 +96,12 @@ def choose_enemy():
         unit_class = request.form["unit_class"]
         weapon = request.form["weapon"]
         armor = request.form["armor"]
+        equip = Equipment()
         enemy = EnemyUnit(name=name, unit_class=unit_classes[unit_class])
-        enemy.equip_weapon(Equipment().get_weapon(weapon_name=weapon))
-        enemy.equip_armor(Equipment().get_armor(armor_name=armor))
-        heroes["player"] = enemy
-
+        enemy.equip_weapon(equip.get_weapon(weapon_name=weapon))
+        enemy.equip_armor(equip.get_armor(armor_name=armor))
+        print(enemy.name)
+        heroes["enemy"] = enemy
         return redirect(url_for("start_fight"))
 
 

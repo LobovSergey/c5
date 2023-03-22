@@ -1,6 +1,3 @@
-from unit import BaseUnit
-
-
 class BaseSingleton(type):
     _instances = {}
 
@@ -16,7 +13,9 @@ class Arena(metaclass=BaseSingleton):
     player = None
     enemy = None
     game_is_running = False
-    battle_result = None
+
+    def __init__(self):
+        self.battle_result = None
 
     def start_game(self, player, enemy):
         self.player = player
@@ -30,6 +29,7 @@ class Arena(metaclass=BaseSingleton):
             self.battle_result = f"{self.enemy.name} выиграл битву"
         elif self.enemy.hp <= 0:
             self.battle_result = f"{self.player.name} выиграл битву"
+        return self._end_game()
 
     def _stamina_regeneration(self):
         players = (self.player, self.enemy)
@@ -40,21 +40,24 @@ class Arena(metaclass=BaseSingleton):
                 unit.stamina = unit.unit_class.max_stamina
 
     def next_turn(self):
-        if result := self._check_players_hp():
+
+        if result := self._check_players_hp() is not None:
             return result
 
-        self._stamina_regeneration()
-        self.enemy.hit(self.player)
+        if self.game_is_running:
+            self._stamina_regeneration()
+            return self.enemy.hit(self.player)
 
     def _end_game(self):
         self._instances = {}
         self.game_is_running = False
-        return self.batle_result
+        return self.battle_result
 
     def player_hit(self):
         result = self.player.hit(self.enemy)
         enemy_result = self.next_turn()
-        return f"Player:{result}\nEnemy:{enemy_result}"
+        return f"Player:{result}" \
+               f"\n\nEnemy:{enemy_result}"
 
     def player_use_skill(self):
         player_skill = self.player.use_skill(self.enemy)
