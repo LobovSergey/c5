@@ -33,11 +33,11 @@ class BaseUnit(ABC):
 
     def equip_weapon(self, weapon: Weapon):
         self.weapon = weapon
-        return f"{self.name} экипирован оружием {self.weapon.name}"
+        return f"{self.name} экипирован оружием "
 
     def equip_armor(self, armor: Armor):
         self.armor = armor
-        return f"{self.name} экипирован броней {self.armor.name}"
+        return f"{self.name} экипирован броней "
 
     def _count_damage(self, target: BaseUnit) -> float:
         target_diffence = 0

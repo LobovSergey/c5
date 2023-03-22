@@ -29,8 +29,8 @@ class Weapon:
 
 @dataclass
 class EquipmentData:
-    weapon_equipment: List = List[Weapon]
-    armor_equipment: List = List[Armor]
+    weapons: List[Weapon]
+    armors: List[Armor]
 
 
 class Equipment:
@@ -39,26 +39,26 @@ class Equipment:
         self.equipments = self._get_equipment_data()
 
     def get_weapon(self, weapon_name) -> Optional[Weapon]:
-        for weapon in self.equipments.weapon_equipment:
-            if weapon_name in weapon:
+        for weapon in self.equipments.weapons:
+            if weapon_name == weapon:
                 return weapon
-            return None
+        return None
 
     def get_armor(self, armor_name):
-        for armor in self.equipments.armor_equipment:
-            if armor_name in armor:
+        for armor in self.equipments.armors:
+            if armor_name == armor:
                 return armor
-            return None
+        return None
 
     def get_weapons_names(self) -> list:
-        return [weapon.name for weapon in self.equipments.weapon_equipment]
+        return [weapon.name for weapon in self.equipments.weapons]
 
     def get_armors_names(self) -> list:
-        return [armor.name for armor in self.equipments.armor_equipment]
+        return [armor.name for armor in self.equipments.armors]
 
     @staticmethod
     def _get_equipment_data() -> EquipmentData:
-        with open("./data/equipment.json", 'r', encoding='UTF-8') as file:
+        with open("data/equipment.json", 'r', encoding='UTF-8') as file:
             data = json.load(file)
             equipment_schema = marshmallow_dataclass.class_schema(EquipmentData)
             try:

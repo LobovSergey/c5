@@ -17,11 +17,11 @@ class Arena(metaclass=BaseSingleton):
     enemy = None
     game_is_running = False
 
-    def start_game(self, player: BaseUnit, enemy: BaseUnit):
+    def start_game(self, player, enemy):
         self.player = player
         self.enemy = enemy
         self.game_is_running = True
-        self.battle_result = None
+
 
     def _check_players_hp(self):
         if self.player.hp <= 0 and self.enemy.hp <= 0:
