@@ -76,7 +76,7 @@ class PlayerUnit(BaseUnit):
 
 class EnemyUnit(BaseUnit):
 
-    def hit(self, target: BaseUnit) -> str:
+    def hit(self, target) -> str:
         if not self._is_skill_used and randint(0, 99) < 10 and self.stamina >= self.unit_class.skill.stamina:
             return self.use_skill(target=target)
 
@@ -87,6 +87,5 @@ class EnemyUnit(BaseUnit):
         if damage > 0:
             return f"{self.name} используя {self.weapon.name} пробивает {target.armor.name} соперника и наносит " \
                    f"{damage} урона."
-
         return f"{self.name} используя {self.weapon.name} наносит удар," \
                f" но {target.armor.name} cоперника его останавливает."

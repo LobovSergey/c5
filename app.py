@@ -77,7 +77,6 @@ def choose_hero():
         player.equip_weapon(equip.get_weapon(weapon))
         player.equip_armor(equip.get_armor(armor))
         heroes["player"] = player
-        print(player.weapon)
         return redirect(url_for("choose_enemy"))
 
 
@@ -100,7 +99,6 @@ def choose_enemy():
         enemy = EnemyUnit(name=name, unit_class=unit_classes[unit_class])
         enemy.equip_weapon(equip.get_weapon(weapon_name=weapon))
         enemy.equip_armor(equip.get_armor(armor_name=armor))
-        print(enemy.name)
         heroes["enemy"] = enemy
         return redirect(url_for("start_fight"))
 
